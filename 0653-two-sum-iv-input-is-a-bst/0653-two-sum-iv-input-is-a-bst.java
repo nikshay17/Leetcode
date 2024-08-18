@@ -14,25 +14,26 @@
  * }
  */
 class Solution {
-    Set<Integer> s=new HashSet<>();
-    boolean flag=false;
-    public void treefill(TreeNode root,int k){
+    public boolean fT(TreeNode root,int k,HashSet<Integer> s){
         if(root==null){
-            return;
+            return false;
         }
-        treefill(root.left,k);
-        
+        if(fT(root.left,k,s)==true){
+            return true;
+        }
         if(s.contains(k-root.val)){
-            flag=true;
-            
+            return true;
         }
-        s.add(root.val);
-        treefill(root.right,k);
+        else{
+            s.add(root.val);
+        }
+       return fT(root.right,k,s);
+        
+        
     }
-    
     public boolean findTarget(TreeNode root, int k) {
-        treefill(root,k);
-        return flag;
+        HashSet<Integer> s=new HashSet<>();
+        return fT(root,k,s);
         
         
     }
