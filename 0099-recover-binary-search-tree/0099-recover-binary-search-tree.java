@@ -14,43 +14,40 @@
  * }
  */
 class Solution {
-    TreeNode prev=null;
-    TreeNode first=null;
-    TreeNode second=null;
-    public void swap( TreeNode a,TreeNode b){
-        if(a!=null && b!=null){
-            int temp=a.val;
-            a.val=b.val;
-            b.val=temp;
+    public void swap(TreeNode first,TreeNode second){
+        if(first!=null && second!=null){
+        int temp=first.val;
+        first.val=second.val;
+        second.val=temp;
         }
     }
-    public void recover(TreeNode root) {
+    TreeNode prev=null;
+        TreeNode first=null;
+        TreeNode second=null;
+    public void recoverTree(TreeNode root) {
+        
+        rT(root);
+        swap(first,second);
+        
+        
+    }
+    public void rT(TreeNode root){
         if(root==null){
             return;
         }
         
-        recover(root.left);
-        if(prev!=null && root.val<prev.val){
+        rT(root.left);
+        if(prev!=null && prev.val>root.val){
             if(first==null){
                 first=prev;
-            
             }
-           
             second=root;
+            
         }
-        
         prev=root;
-        recover(root.right);
         
+        rT(root.right);
         
-        
-    }
-    
-    
-    public void recoverTree(TreeNode root){
-        
-        recover(root);
-        swap(first,second);
         
         
     }
