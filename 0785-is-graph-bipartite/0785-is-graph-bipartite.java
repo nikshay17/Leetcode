@@ -1,44 +1,42 @@
 class Solution {
     
-    boolean check(int i,int n,int[][]graph,int[]color){
-        Queue<Integer> q=new LinkedList<>();
-        q.add(i);
-        color[i]=0;
-        while(!q.isEmpty()){
-            int node=q.poll();
-            
-            
-            for(int ad:graph[node]){
-                
-                if(color[ad]==-1){
-                    color[ad]=1-color[node];
-                    q.add(ad);
-                }
-                else if(color[ad]==color[node]){
-                    return false;
-                }
+
+    public boolean dfs(int [][] graph,int []color,int node,int col){
+        
+        for(int adjnode:graph[node]){
+            if(color[adjnode]==-1){
+                color[adjnode]=1-color[node];
+            if(dfs(graph,color,adjnode,color[adjnode])==false){
+                return false;
+            }
+            }
+            else if(color[adjnode]==color[node]){
+                return false;
             }
         }
+        
         return true;
-        }
+        
+        
+    }
     public boolean isBipartite(int[][] graph) {
-        int n=graph.length;
-        int [] color=new int[n];
-        for(int i=0;i<n;i++){
+        int m=graph.length;       
+        int [] color=new int[m];
+        for(int i=0;i<m;i++){
             color[i]=-1;
         }
         
         
-        for(int i=0;i<n;i++){
+        
+        for(int i=0;i<m;i++){
             if(color[i]==-1){
-                if(  check(i,n,graph,color)==false){
+                color[i]=0;
+                
+                if(dfs(graph,color,i,color[i])==false){
                     return false;
-                    
                 }
             }
         }
-        
         return true;
-        
     }
 }
