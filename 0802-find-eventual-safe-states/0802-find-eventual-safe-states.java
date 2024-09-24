@@ -1,47 +1,44 @@
 class Solution {
-    
-    public boolean dfs(int i,int visited[],int [] path,int check[],int graph[][]){
-        visited[i]=1;
-        path[i]=1;
-        check[i]=0;
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        int m=graph.length;
+        List<List<Integer>> adj=new ArrayList<>();
+        List<Integer> l=new ArrayList<>();
         
-        for(int it:graph[i]){
-            if(visited[it]==0){
-                if(dfs(it,visited,path,check,graph)==true){
-                    return true;
-                }
+        
+        for(int i=0;i<m;i++){
+            adj.add(new ArrayList<>());
+        }
+        int [] indegree=new int[m];
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<graph[i].length;j++){
+                adj.get(graph[i][j]).add(i);
+                indegree[i]++;
             }
             
-            else if(path[it]==1){
-                return true;
-            }
+            
         }
-        check[i]=1;
-        path[i]=0;
-        return false;
-        
-    }
-    public List<Integer> eventualSafeNodes(int[][] graph) {
-        
-        int V=graph.length;
-        int [] visited=new int[V];
-        int [] path=new int[V];
-        int [] check=new int[V];
-        
-        
-        for(int i=0;i<V;i++){
-            if(visited[i]==0){
-                dfs(i,visited,path,check,graph);
-            }
-        }
-        List<Integer>l=new ArrayList<>();
-        for(int i=0;i<V;i++){
-            if(check[i]==1){
-                l.add(i);
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=0;i<m;i++){
+            if(indegree[i]==0){
+                q.add(i);
             }
         }
         
+        
+        while(!q.isEmpty()){
+            int a=q.poll();
+            l.add(a);
+            for(int i:adj.get(a)){
+                indegree[i]--;
+                if(indegree[i]==0){
+                    q.add(i);
+                }
+            }
+        }
+        Collections.sort(l);
         return l;
+        
         
     }
 }
